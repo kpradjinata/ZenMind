@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZenMind"
         tools:targetApi="31">
+
+        <!-- MainActivity is the entry point of the app -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,10 +21,17 @@
             android:theme="@style/Theme.ZenMind">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
-</manifest>
+        <!-- LoginActivity for handling user authentication -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ZenMind"> <!-- Assuming you want to use the same theme -->
+    </activity>
+
+</application>
+
+    </manifest>

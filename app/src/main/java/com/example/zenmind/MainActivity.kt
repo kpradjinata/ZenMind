@@ -19,16 +19,37 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 
 
 
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import android.content.Intent
+
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ZenMindTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFF81C784) // Background color
+
+        FirebaseApp.initializeApp(this)
+
+
+        // Check if the user is logged in
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            // User not logged in, redirect to LoginScreen
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        } else {
+            setContent {
+                ZenMindTheme {
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                      modifier = Modifier.fillMaxSize(),
+                      color = Color(0xFF81C784) // Background color
                 ) {
-                    HydrationRecommendation()
+                      HydrationRecommendation()
+                    }
+
+
                 }
             }
         }
