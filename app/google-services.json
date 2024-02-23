@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "727821703217",
+    "project_id": "cs125-f4c51",
+    "storage_bucket": "cs125-f4c51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727821703217:android:a3013c1ba40774a9bd1d10",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFEVDZwAznJlfA1pXsEcvstKN0ZnoByzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727821703217:android:53b07822336dd66cbd1d10",
+        "android_client_info": {
+          "package_name": "com.example.zenmind"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFEVDZwAznJlfA1pXsEcvstKN0ZnoByzI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
