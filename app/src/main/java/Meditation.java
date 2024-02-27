@@ -54,7 +54,7 @@
 //User will select meditation exercise type
 
 import android.widget.Toast;
-import java.util.Random;
+import java.util.*;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
