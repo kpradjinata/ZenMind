@@ -18,22 +18,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.zenmind.ui.theme.ZenMindTheme
 import androidx.compose.ui.unit.dp
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ZenMindTheme {
-                // Apply a soothing background color
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    HydrationRecommendationEnhanced()
-                }
-            }
-        }
-    }
-}
+//class MainActivity : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContent {
+//            ZenMindTheme {
+//                // Apply a soothing background color
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colorScheme.background
+//                ) {
+//                    HydrationRecommendationEnhanced()
+//                }
+//            }
+//        }
+//    }
+//}
 
 @Composable
 fun HydrationRecommendationEnhanced() {

@@ -1,6 +1,6 @@
 package com.example.zenmind
 
-import MeditationScreen
+//import MeditationScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -54,8 +54,8 @@ class MainActivity : ComponentActivity() {
                     color = Color(0xFF81C784) // Background color
                 ) {
                     ZenMindTheme {
-                        HydrationScreen()
-                        MeditationScreen()
+//                        HydrationRecommendationEnhanced()
+                        MeditationContent()
                     }
                 }
             }
