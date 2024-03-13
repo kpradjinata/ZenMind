@@ -25,6 +25,8 @@ import androidx.compose.runtime.Composable
 sealed class NavigationItem(var route: String, var icon: ImageVector, var title: String) {
     object Meditation : NavigationItem("meditation", Icons.Default.Home, "Meditation")
     object Hydration : NavigationItem("hydration", Icons.Default.Settings, "Hydration")
+
+    object Sleep : NavigationItem("sleep", Icons.Default.Settings, "Sleep")
 }
 
 @Composable
@@ -37,6 +39,9 @@ fun NavigationGraph(navController: NavHostController) {
             // Placeholder or the actual composable for the hydration screen
             HydrationRecommendationEnhanced()
         }
+        composable(NavigationItem.Sleep.route) {
+            SleepRecommendation()
+        }
     }
 }
 
@@ -44,7 +49,8 @@ fun NavigationGraph(navController: NavHostController) {
 fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
             NavigationItem.Meditation,
-            NavigationItem.Hydration
+            NavigationItem.Hydration,
+            NavigationItem.Sleep
             // Add more items as necessary
     )
     BottomNavigation {
