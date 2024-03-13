@@ -25,6 +25,7 @@ import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
+import android.widget.Button
 
 
 class MainActivity : ComponentActivity() {
@@ -32,6 +33,8 @@ class MainActivity : ComponentActivity() {
 
 
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity) //Meditation screen
+
         FirebaseApp.initializeApp(this)
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
@@ -55,7 +58,12 @@ class MainActivity : ComponentActivity() {
                 ) {
                     ZenMindTheme {
                         HydrationScreen()
-                        MeditationScreen()
+                        //Meditation Screen
+                        val medScreen: Button = findViewById(R.id.medScreen)
+                        medScreen.setOnClickListener{
+                            startActivity(Intent(this, MeditationScreen::class.java))
+                            finish()
+                        }
                     }
                 }
             }

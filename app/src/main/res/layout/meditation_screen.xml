@@ -53,4 +53,11 @@
         android:layout_below="@id/buttonVisualization"
         android:layout_marginBottom="16dp"/>
 
+    <Button
+        android:id="@+id/goBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go Back"
+        android:layout_below="@id/buttonRandomExercise"
+        android:layout_marginBottom="16dp"/>
 </RelativeLayout>
