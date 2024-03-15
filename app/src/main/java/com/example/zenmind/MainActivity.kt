@@ -1,5 +1,7 @@
 package com.example.zenmind
 
+//import MeditationScreen
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +19,8 @@ import com.example.zenmind.ui.theme.ZenMindTheme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import android.util.Log
+
+import androidx.navigation.compose.rememberNavController
 
 
 
@@ -56,13 +60,10 @@ class MainActivity : ComponentActivity() {
                     color = Color(0xFF81C784) // Background color
                 ) {
                     ZenMindTheme {
-                        HydrationScreen()
-                        //Meditation Screen
-                        val medScreen: Button = findViewById(R.id.medScreen)
-                        medScreen.setOnClickListener{
-                            startActivity(Intent(this, MeditationScreen::class.java))
-                            finish()
-                        }
+
+                        MainScreen()
+//                        HydrationRecommendationEnhanced()
+//                        MeditationContent()
                     }
                 }
             }
@@ -72,5 +73,18 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         // Sign out the user when the activity starts
         FirebaseAuth.getInstance().signOut()
+    }
+}
+
+
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+            bottomBar = { BottomNavigationBar(navController) }
+    ) {
+        ZenMindTheme {
+            NavigationGraph(navController)
+        }
     }
 }
