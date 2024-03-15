@@ -1,6 +1,7 @@
 package com.example.zenmind
 
 //import MeditationScreen
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
+import android.widget.Button
 
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +36,8 @@ class MainActivity : ComponentActivity() {
 
 
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.main_activity) //Meditation screen
+
         FirebaseApp.initializeApp(this)
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
@@ -56,6 +60,7 @@ class MainActivity : ComponentActivity() {
                     color = Color(0xFF81C784) // Background color
                 ) {
                     ZenMindTheme {
+
                         MainScreen()
 //                        HydrationRecommendationEnhanced()
 //                        MeditationContent()
