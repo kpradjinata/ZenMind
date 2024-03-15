@@ -1,6 +1,5 @@
 package com.example.zenmind
 
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -24,17 +23,10 @@ class LifestyleViewModel : ViewModel() {
     private val _hydrationScores = MutableStateFlow<List<Int>>(emptyList())
     val hydrationScores: StateFlow<List<Int>> = _hydrationScores
 
-    private val _isUpdateComplete = MutableStateFlow(false)
-    val isUpdateComplete: StateFlow<Boolean> = _isUpdateComplete
-
     fun addSleepScore(score: Int) {
         viewModelScope.launch {
-            _sleepScores.value = _sleepScores.value + listOf(score)
-            _isUpdateComplete.value = true // Signal that update is complete
+            _sleepScores.value = _sleepScores.value + score
         }
-    }
-    fun resetUpdateState() {
-        _isUpdateComplete.value = false
     }
 
     fun addMeditationScore(score: Int) {
@@ -54,12 +46,10 @@ class LifestyleViewModel : ViewModel() {
 fun LifestyleScorePage(viewModel: LifestyleViewModel = viewModel()) {
     // Observing scores from the ViewModel
     val sleepScores by viewModel.sleepScores.collectAsState()
-    Log.d("LifestyleScorePage", "Sleep Scores: $sleepScores")
     val meditationScores by viewModel.meditationScores.collectAsState()
     val hydrationScores by viewModel.hydrationScores.collectAsState()
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Log.d("LifestyleScorePage", "Displaying updated scores")
         Text("Lifestyle Scores", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(8.dp))
         // Use .joinToString() for better display of List<Int>

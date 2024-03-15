@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @Composable
-fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel(), onNavigate: () -> Unit) {
+fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
     val context = LocalContext.current
     var sleepTime by remember { mutableStateOf<LocalTime?>(null) }
     var wakeUpTime by remember { mutableStateOf<LocalTime?>(null) }
@@ -58,15 +58,15 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel(), onNavigate:
         ) {
             Text(text = wakeUpTime?.format(DateTimeFormatter.ofPattern("h:mm a")) ?: "Set Wake-up Time")
         }
-        val isUpdateComplete by viewModel.isUpdateComplete.collectAsState()
+
         Button(
             onClick = {
                 if (sleepTime != null && wakeUpTime != null) {
                     showResult = true
                     val calculatedScore = calculateLifestyleScore(sleepTime!!, wakeUpTime!!)
                     lifestyleScore = calculatedScore
-                    viewModel.addSleepScore(calculatedScore) // Update the ViewModel
-                    Log.d("SleepScreen", "Score added: $calculatedScore")
+                    viewModel.addSleepScore(calculatedScore)
+                    Toast.makeText(context, "Lifestyle score updated", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Please set both sleep and wake-up times", Toast.LENGTH_SHORT).show()
                 }
@@ -75,14 +75,6 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel(), onNavigate:
         ) {
             Text("Check")
         }
-        LaunchedEffect(isUpdateComplete) {
-            if (isUpdateComplete) {
-                onNavigate()
-                viewModel.resetUpdateState()
-            }
-        }
-
-
 
         if (showResult) {
             Text(
@@ -91,9 +83,7 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel(), onNavigate:
                 modifier = Modifier.padding(top = 16.dp)
             )
         }
-
     }
-
 }
 
 fun calculateLifestyleScore(sleepTime: LocalTime, wakeUpTime: LocalTime): Int {
@@ -104,6 +94,6 @@ fun calculateLifestyleScore(sleepTime: LocalTime, wakeUpTime: LocalTime): Int {
         in 3..4 -> 40
         in 5..6 -> 75
         in 7..9 -> 100
-        else -> 90 // Adjust as needed
+        else -> 90
     }
 }

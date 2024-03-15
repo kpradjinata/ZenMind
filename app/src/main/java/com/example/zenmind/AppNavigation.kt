@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.Text
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 sealed class NavigationItem(var route: String, var icon: ImageVector, var title: String) {
     object Meditation : NavigationItem("meditation", Icons.Default.Home, "Meditation")
@@ -35,20 +34,17 @@ sealed class NavigationItem(var route: String, var icon: ImageVector, var title:
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Meditation.route) {
         composable(NavigationItem.Meditation.route) {
-            MeditationContent() // Make sure this composable is accessible
+            MeditationContent()
         }
         composable(NavigationItem.Hydration.route) {
-            // Placeholder or the actual composable for the hydration screen
+
             HydrationRecommendationEnhanced()
         }
         composable(NavigationItem.Sleep.route) {
-            SleepRecommendation(viewModel = viewModel()) {
-                // Assuming you have navController available here
-                navController.navigate(NavigationItem.Lifestyle.route)
-            }
+            SleepRecommendation()
         }
         composable(NavigationItem.Lifestyle.route) {
-            LifestyleScorePage() // Ensure this composable is defined and ready to display the scores
+            LifestyleScorePage()
         }
     }
 }
@@ -59,7 +55,7 @@ fun BottomNavigationBar(navController: NavHostController) {
         NavigationItem.Meditation,
         NavigationItem.Hydration,
         NavigationItem.Sleep,
-        NavigationItem.Lifestyle // Make sure this is included
+        NavigationItem.Lifestyle
     )
     BottomNavigation {
         items.forEach { item ->
@@ -69,7 +65,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                 selected = navController.currentDestination?.route == item.route,
                 onClick = {
                     navController.navigate(item.route) {
-                        // Avoid multiple copies of the same destination in the stack
+
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true
                     }
