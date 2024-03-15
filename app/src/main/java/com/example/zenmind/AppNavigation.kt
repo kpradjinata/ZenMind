@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 
+
 import androidx.compose.material.Text
 
 import androidx.compose.runtime.Composable
@@ -25,22 +26,25 @@ import androidx.compose.runtime.Composable
 sealed class NavigationItem(var route: String, var icon: ImageVector, var title: String) {
     object Meditation : NavigationItem("meditation", Icons.Default.Home, "Meditation")
     object Hydration : NavigationItem("hydration", Icons.Default.Settings, "Hydration")
-
-    object Sleep : NavigationItem("sleep", Icons.Default.Settings, "Sleep")
+    object Sleep : NavigationItem("sleep", Icons.Default.Home, "Sleep")
+    object Lifestyle : NavigationItem("lifestyle", Icons.Default.Settings, "Lifestyle") // New
 }
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Meditation.route) {
         composable(NavigationItem.Meditation.route) {
-            MeditationContent() // Make sure this composable is accessible
+            MeditationContent()
         }
         composable(NavigationItem.Hydration.route) {
-            // Placeholder or the actual composable for the hydration screen
+
             HydrationRecommendationEnhanced()
         }
         composable(NavigationItem.Sleep.route) {
             SleepRecommendation()
+        }
+        composable(NavigationItem.Lifestyle.route) {
+            LifestyleScorePage()
         }
     }
 }
@@ -48,23 +52,24 @@ fun NavigationGraph(navController: NavHostController) {
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
-            NavigationItem.Meditation,
-            NavigationItem.Hydration,
-            NavigationItem.Sleep
-            // Add more items as necessary
+        NavigationItem.Meditation,
+        NavigationItem.Hydration,
+        NavigationItem.Sleep,
+        NavigationItem.Lifestyle
     )
     BottomNavigation {
         items.forEach { item ->
             BottomNavigationItem(
-                    icon = { Icon(Icons.Filled.Home, contentDescription = "Home") },
-                    label = { Text(item.title) },
-                    selected = navController.currentDestination?.route == item.route,
-                    onClick = {
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId)
-                            launchSingleTop = true
-                        }
+                icon = { Icon(item.icon, contentDescription = item.title) },
+                label = { Text(item.title) },
+                selected = navController.currentDestination?.route == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
                     }
+                }
             )
         }
     }

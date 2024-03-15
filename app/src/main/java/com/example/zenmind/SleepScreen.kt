@@ -1,29 +1,37 @@
 package com.example.zenmind
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import android.util.Log
+import android.app.TimePickerDialog
+import android.widget.Toast
 import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.zenmind.ui.theme.ZenMindTheme
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 @Composable
-fun SleepRecommendation() {
-    var sleepTime by remember { mutableStateOf("") }
-    var wakeUpTime by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
+fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
+    val context = LocalContext.current
+    var sleepTime by remember { mutableStateOf<LocalTime?>(null) }
+    var wakeUpTime by remember { mutableStateOf<LocalTime?>(null) }
     var showResult by remember { mutableStateOf(false) }
-    var adequateSleep by remember { mutableStateOf(false) }
+    var lifestyleScore by remember { mutableStateOf(0) }
+
+    fun showTimePicker(currentTime: LocalTime?, onTimeSet: (LocalTime) -> Unit) {
+        val timePickerDialog = TimePickerDialog(context,
+            { _, hourOfDay, minute -> onTimeSet(LocalTime.of(hourOfDay, minute)) },
+            currentTime?.hour ?: LocalTime.now().hour,
+            currentTime?.minute ?: LocalTime.now().minute,
+            false // Use 24-hour view
+        )
+        timePickerDialog.show()
+    }
 
     Column(
         modifier = Modifier
@@ -37,62 +45,40 @@ fun SleepRecommendation() {
             style = MaterialTheme.typography.headlineMedium
         )
 
-        OutlinedTextField(
-            value = date,
-            onValueChange = { date = it },
-            label = { Text("Date (YYYY-MM-DD)") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Button(
+            onClick = { showTimePicker(sleepTime) { sleepTime = it } },
+            modifier = Modifier.fillMaxWidth()
         ) {
-            OutlinedTextField(
-                value = sleepTime,
-                onValueChange = { sleepTime = it },
-                label = { Text("Sleep Time (HH:MM AM/PM)") },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                modifier = Modifier.weight(1f),
-                singleLine = true
-            )
+            Text(text = sleepTime?.format(DateTimeFormatter.ofPattern("h:mm a")) ?: "Set Sleep Time")
+        }
 
-            OutlinedTextField(
-                value = wakeUpTime,
-                onValueChange = { wakeUpTime = it },
-                label = { Text("Wake-up Time (HH:MM AM/PM)") },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                modifier = Modifier.weight(1f),
-                singleLine = true
-            )
+        Button(
+            onClick = { showTimePicker(wakeUpTime) { wakeUpTime = it } },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = wakeUpTime?.format(DateTimeFormatter.ofPattern("h:mm a")) ?: "Set Wake-up Time")
         }
 
         Button(
             onClick = {
-                showResult = true
-                adequateSleep = isSleepAdequate(sleepTime, wakeUpTime)
+                if (sleepTime != null && wakeUpTime != null) {
+                    showResult = true
+                    val calculatedScore = calculateLifestyleScore(sleepTime!!, wakeUpTime!!)
+                    lifestyleScore = calculatedScore
+                    viewModel.addSleepScore(calculatedScore)
+                    Toast.makeText(context, "Lifestyle score updated", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Please set both sleep and wake-up times", Toast.LENGTH_SHORT).show()
+                }
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
         ) {
             Text("Check")
         }
 
         if (showResult) {
             Text(
-                text = if (adequateSleep) "Adequate sleep achieved! X Lifestyle points earned from Sleep" else "Your sleep was not adequate.",
+                text = "Lifestyle score earned from Sleep: $lifestyleScore",
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(top = 16.dp)
             )
@@ -100,51 +86,14 @@ fun SleepRecommendation() {
     }
 }
 
-fun isSleepAdequate(sleepTime: String, wakeUpTime: String): Boolean {
-    val sleepRegex = """(\d{1,2}):(\d{2})\s?(AM|PM)""".toRegex()
-    val wakeUpRegex = """(\d{1,2}):(\d{2})\s?(AM|PM)""".toRegex()
+fun calculateLifestyleScore(sleepTime: LocalTime, wakeUpTime: LocalTime): Int {
+    val duration = ChronoUnit.HOURS.between(sleepTime, wakeUpTime).let { if (it < 0) it + 24 else it }.toInt()
 
-    val sleepMatch = sleepRegex.find(sleepTime)
-    val wakeUpMatch = wakeUpRegex.find(wakeUpTime)
-
-    if (sleepMatch != null && wakeUpMatch != null) {
-        val (sleepHour, sleepMinute, sleepPeriod) = sleepMatch.destructured
-        val (wakeUpHour, wakeUpMinute, wakeUpPeriod) = wakeUpMatch.destructured
-
-        var sleepHourInt = sleepHour.toInt()
-        var wakeUpHourInt = wakeUpHour.toInt()
-
-        // Convert to 24-hour format
-        if (sleepPeriod == "PM" && sleepHourInt < 12) {
-            sleepHourInt += 12
-        }
-        if (wakeUpPeriod == "PM" && wakeUpHourInt < 12) {
-            wakeUpHourInt += 12
-        }
-
-        val totalSleepHours = when {
-            wakeUpHourInt > sleepHourInt -> wakeUpHourInt - sleepHourInt
-            wakeUpHourInt == sleepHourInt && wakeUpMinute.toInt() > sleepMinute.toInt() -> 0
-            else -> 24 - sleepHourInt + wakeUpHourInt
-        }
-
-        val totalSleepMinutes = when {
-            wakeUpMinute.toInt() >= sleepMinute.toInt() -> wakeUpMinute.toInt() - sleepMinute.toInt()
-            else -> 60 - sleepMinute.toInt() + wakeUpMinute.toInt()
-        }
-
-        val totalSleep = totalSleepHours + totalSleepMinutes / 60.0
-
-        return totalSleep in 7.0..9.0
-    }
-
-    return false
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSleepRecommendation() {
-    ZenMindTheme {
-        SleepRecommendation()
+    return when (duration) {
+        in 0..2 -> 10
+        in 3..4 -> 40
+        in 5..6 -> 75
+        in 7..9 -> 100
+        else -> 90
     }
 }
