@@ -1,6 +1,9 @@
 package com.example.zenmind
 
 import androidx.compose.material.Icon
+
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
