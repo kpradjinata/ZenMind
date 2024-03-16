@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,100 +22,45 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HydrationRecommendationEnhanced(viewModel: LifestyleViewModel = viewModel()) {
-    var height by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
+    var weightInput by remember { mutableStateOf("") }
     var waterIntake by remember { mutableStateOf("") }
-    var activityLevel by remember { mutableStateOf(0.5f) }
+    var climate by remember { mutableStateOf("Cool/Temperate") }
+    var minutesOfExercise by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var recommendedWaterIntake by remember { mutableStateOf(0) }
     var lifestyleScore by remember { mutableStateOf(0) }
     var displayScoreMessage by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "Hydration Recommendation",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
+    val climateOptions = listOf("Cool/Temperate", "Hot", "Humid and Hot")
 
-        OutlinedTextField(
-            value = height,
-            onValueChange = { height = it },
-            label = { Text("Height (cm)") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp)
-        )
+    Column(modifier = Modifier.padding(16.dp).fillMaxSize(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("Hydration Recommendation", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.align(Alignment.CenterHorizontally))
 
-        OutlinedTextField(
-            value = weight,
-            onValueChange = { weight = it },
-            label = { Text("Weight (kg)") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp)
-        )
+        OutlinedTextField(value = weightInput, onValueChange = { weightInput = it }, label = { Text("Weight (e.g., 150 lbs or 68 kg)") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next), modifier = Modifier.fillMaxWidth(), singleLine = true)
 
-        OutlinedTextField(
-            value = waterIntake,
-            onValueChange = { waterIntake = it },
-            label = { Text("Water Intake Today (ml)") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
+        OutlinedTextField(value = waterIntake, onValueChange = { waterIntake = it }, label = { Text("mL of Water Drank Today") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next), modifier = Modifier.fillMaxWidth(), singleLine = true)
 
-        Slider(
-            value = activityLevel,
-            onValueChange = { activityLevel = it },
-            valueRange = 0f..1f,
-            modifier = Modifier.fillMaxWidth(),
-            steps = 2
-        )
-        Text(
-            text = when (activityLevel) {
-                in 0f..0.33f -> "Low"
-                in 0.34f..0.66f -> "Medium"
-                else -> "High"
-            },
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.align(Alignment.End)
-        )
+        Text("Select Climate:", style = MaterialTheme.typography.bodyMedium)
+        Row {
+            climateOptions.forEach { option ->
+                Text(text = option, modifier = Modifier.padding(8.dp).clickable { climate = option }, style = MaterialTheme.typography.bodyLarge.copy(color = if (climate == option) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface))
+            }
+        }
 
-        Button(
-            onClick = {
-                val heightValue = height.toIntOrNull()
-                val weightValue = weight.toIntOrNull()
-                val waterIntakeValue = waterIntake.toIntOrNull()
-                if (heightValue != null && weightValue != null && waterIntakeValue != null) {
-                    recommendedWaterIntake = calculateRecommendedWaterIntake(heightValue, weightValue, activityLevel)
-                    showDialog = true
-                    lifestyleScore = calculateHydrationScore(recommendedWaterIntake, waterIntakeValue)
-                    displayScoreMessage = true
-                    viewModel.addHydrationScore(lifestyleScore)
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            shape = RoundedCornerShape(8.dp)
-        ) {
+        OutlinedTextField(value = minutesOfExercise, onValueChange = { minutesOfExercise = it }, label = { Text("Minutes of Exercise") }, keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done), modifier = Modifier.fillMaxWidth(), singleLine = true)
+
+        Button(onClick = {
+            val (weightValue, weightUnit) = parseWeightInput(weightInput)
+            val exerciseMinutes = minutesOfExercise.toIntOrNull() ?: 0
+            val waterIntakeValue = waterIntake.toIntOrNull()
+            if (weightValue != null && waterIntakeValue != null && weightUnit != null) {
+                recommendedWaterIntake = calculateRecommendedWaterIntake(weightValue, weightUnit, climate, exerciseMinutes)
+                showDialog = true
+                lifestyleScore = calculateHydrationScore(recommendedWaterIntake, waterIntakeValue)
+                displayScoreMessage = true
+                viewModel.addHydrationScore(lifestyleScore)
+            }
+        }, modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), shape = RoundedCornerShape(8.dp)) {
             Text("Calculate")
         }
 
@@ -124,25 +70,43 @@ fun HydrationRecommendationEnhanced(viewModel: LifestyleViewModel = viewModel())
 
         if (displayScoreMessage) {
             val message = getHydrationMessage(lifestyleScore)
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(top = 16.dp)
-            )
+            Text(text = message, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 16.dp))
         }
     }
 }
 
-fun calculateRecommendedWaterIntake(height: Int, weight: Int, activityLevel: Float): Int {
-    val baseWaterIntake = (weight / 2.2) * 30
-    val activityMultiplier = when {
-        activityLevel < 0.3 -> 0.5
-        activityLevel < 0.6 -> 0.7
-        else -> 1.0
-    }
-    return (baseWaterIntake * activityMultiplier).toInt()
+
+fun parseWeightInput(weightInput: String): Pair<Double?, String?> {
+    val weightValue = weightInput.filter { it.isDigit() || it == '.' }.toDoubleOrNull()
+    val weightUnit = if ("lbs" in weightInput.lowercase()) "lbs" else if ("kg" in weightInput.lowercase()) "kg" else null
+    return weightValue to weightUnit
 }
 
+fun calculateRecommendedWaterIntake(weight: Double, unit: String, climate: String, minutesOfExercise: Int): Int {
+    val weightInLbs = if (unit == "kg") weight * 2.20462 else weight
+    var waterIntakeOz = weightInLbs / 2.0
+    var waterIntakeMl = waterIntakeOz * 20
+
+
+    waterIntakeMl += when (climate) {
+        "Hot" -> 300.0
+        "Humid and Hot" -> 500.0
+        else -> 0.0
+    }
+
+
+    val additionalWaterPer30Min = when (climate) {
+        "Cool/Temperate" -> 300.0
+        "Hot" -> 350.0
+        "Humid and Hot" -> 400.0
+        else -> 300.0
+    }
+
+    val exerciseAdjustment = (minutesOfExercise / 30) * additionalWaterPer30Min
+    waterIntakeMl += exerciseAdjustment
+
+    return waterIntakeMl.toInt()
+}
 fun calculateHydrationScore(recommendedIntake: Int, actualIntake: Int): Int {
     return when {
         actualIntake >= recommendedIntake -> 100

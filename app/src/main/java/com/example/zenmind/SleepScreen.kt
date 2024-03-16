@@ -77,12 +77,24 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
         }
 
         if (showResult) {
+            val message = getPersonalizedMessage(lifestyleScore)
             Text(
-                text = "Lifestyle score earned from Sleep: $lifestyleScore",
+                text = message,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(top = 16.dp)
             )
         }
+    }
+}
+
+fun getPersonalizedMessage(score: Int): String {
+    return when (score) {
+        100 -> "Adequate sleep achieved! Keep up the good work. Lifestyle score earned from Sleep: $score"
+        10 -> "Careful! Lack of sleep can impact cognitive function and decision making, you need to get more sleep in the coming days. Lifestyle score earned from Sleep: $score"
+        40 -> "3-4 hours of sleep is still insufficient but at the very least you are entering the REM cycle, look to get more sleep in the coming days. Lifestyle score earned from Sleep: $score"
+        75 -> "Almost adequate sleep achieved(under 7 hours). Consider taking a power nap during the day. Lifestyle score earned from Sleep: $score"
+        90 -> "The effects of sleeping more than 9 hours a day are heavily debated, though it would only be considered detrimental if you were massively oversleeping (13+ hours). Lifestyle score earned from Sleep: $score"
+        else -> "Your sleep score is $score. It's important to aim for 7-9 hours of quality sleep each night."
     }
 }
 
