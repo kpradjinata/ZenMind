@@ -1,53 +1,75 @@
 package com.example.zenmind
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Typography
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
+import java.util.*
 import com.example.zenmind.ui.theme.ZenMindTheme
-import kotlinx.coroutines.launch
+import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 class MeditationScreen : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ZenMindTheme {
-                MeditationContent()
-            }
+        setContentView(R.layout.meditation_screen)
+
+        // Find buttons by their IDs
+        val buttonDeepBreathing: Button = findViewById(R.id.buttonDeepBreathing)
+        val buttonBodyScan: Button = findViewById(R.id.buttonBodyScan)
+        val buttonLovingKindness: Button = findViewById(R.id.buttonLovingKindness)
+        val buttonMindfulness: Button = findViewById(R.id.buttonMindfulness)
+        val buttonVisualization: Button = findViewById(R.id.buttonVisualization)
+        val buttonRandomExercise: Button = findViewById(R.id.buttonRandomExercise)
+        val buttonGoBack: Button = findViewById(R.id.goBack)
+
+        // Set click listeners for each button
+        buttonDeepBreathing.setOnClickListener {
+            startActivity(Intent(this, DeepBreathingScreen::class.java))
+            finish()
+        }
+
+        buttonBodyScan.setOnClickListener {
+            startActivity(Intent(this, BodyScanScreen::class.java))
+            finish()
+        }
+
+        buttonLovingKindness.setOnClickListener {
+            startActivity(Intent(this, LovingKindScreen::class.java))
+            finish()
+        }
+
+        buttonMindfulness.setOnClickListener {
+            startActivity(Intent(this, MindfulScreen::class.java))
+            finish()
+        }
+
+        buttonVisualization.setOnClickListener {
+            startActivity(Intent(this, VisualizationScreen::class.java))
+            finish()
+        }
+
+        buttonRandomExercise.setOnClickListener {
+            startActivity(Intent(this, RandomScreen::class.java))
+            finish()
+        }
+
+        buttonGoBack.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 }
 
-@Composable
-fun MeditationContent() {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = "Welcome to Meditation", style = MaterialTheme.typography.h5)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Choose your meditation practice:", style = MaterialTheme.typography.body1)
-        // Example button to select a meditation type
-        Button(onClick = { /* Handle click */ }) {
-            Text("Deep Breathing")
-        }
-        // Add more buttons or interactive elements for different meditation practices
-    }
-}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    ZenMindTheme {
-//        MeditationContent()
-//    }
-//}
