@@ -15,11 +15,78 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Steps -->
+    <TextView
+        android:id="@+id/step1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Find a comfortable position, either sitting or lying down. You can sit cross-legged on the floor, on a cushion, or in a chair with your feet flat on the ground. Gently close your eyes to help minimize distractions and focus your attention inward."
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Take a moment to scan your body for any tension or discomfort. If you notice any areas of tension, consciously relax those muscles by releasing any tightness."
+        android:layout_below="@id/step1TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3. Begin by taking a few deep breaths in through your nose and out through your mouth. Pay attention to the sensation of your breath as it enters and leaves your body."
+        android:layout_below="@id/step2TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step4TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4. Inhale deeply through your nose, allowing your abdomen to expand fully. Feel the air filling your lungs from the bottom to the top. Hold your breath for a moment at the top of your inhale."
+        android:layout_below="@id/step3TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step5TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5. Exhale slowly and completely through your mouth, allowing your abdomen to deflate as you release the breath. Focus on fully emptying your lungs."
+        android:layout_below="@id/step4TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step6TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6. Continue this deep breathing pattern, inhaling deeply through your nose and exhaling slowly through your mouth. Notice the rise and fall of your chest and abdomen with each breath."
+        android:layout_below="@id/step5TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step7TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7.  If your mind begins to wander or you become distracted, gently redirect your focus back to your breath."
+        android:layout_below="@id/step6TextView"
+        android:layout_marginBottom="8dp"/>
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step7TextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Conclusion -->
+    <TextView
+        android:id="@+id/conclusionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deep breathing meditation can be practiced for as little as a few minutes each day. Consistency is key, so aim to incorporate deep breathing into your daily routine to experience its full benefits over time."
+        android:layout_below="@id/step7TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
@@ -28,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finish"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/conclusionTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 

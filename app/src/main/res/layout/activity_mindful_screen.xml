@@ -15,11 +15,52 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Steps -->
+    <TextView
+        android:id="@+id/step1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Find a quiet and comfortable space to sit or lie down. Close your eyes or soften your gaze. Sit with your back straight but relaxed, or lie down with your arms by your sides."
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Bring your attention to your breath as it flows in and out of your body. Notice the sensations of each inhale and exhale— the rise and fall of your chest or abdomen, the feeling of air passing through your nostrils."
+        android:layout_below="@id/step1TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3. As you focus on your breath, you may notice thoughts, emotions, or physical sensations arising. Acknowledge them without judgment and gently guide your attention back to your breath whenever you become aware of distractions."
+        android:layout_below="@id/step2TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step4TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4. Continuously bring your attention back to the present moment. Notice any tendencies to wander into the past or future, and gently redirect your focus to your breath and the sensations in your body."
+        android:layout_below="@id/step3TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step5TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5. When you're ready to end the meditation, take a few deep breaths and slowly bring your awareness back to your surroundings. Notice any shifts in your thoughts, emotions, or body sensations. Take a moment to express gratitude for the time you've dedicated to your practice."
+        android:layout_below="@id/step4TextView"
+        android:layout_marginBottom="8dp"/>
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step5TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
@@ -28,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finish"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step5TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
