@@ -80,11 +80,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid?: "defaultUserId"
     Scaffold(
             bottomBar = { BottomNavigationBar(navController) }
     ) {
         ZenMindTheme {
-            NavigationGraph(navController)
+            NavigationGraph(navController,userId)
         }
     }
 }

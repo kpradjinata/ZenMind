@@ -14,24 +14,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
+fun SleepRecommendation() {
     val context = LocalContext.current
     var sleepTime by remember { mutableStateOf<LocalTime?>(null) }
     var wakeUpTime by remember { mutableStateOf<LocalTime?>(null) }
     var showResult by remember { mutableStateOf(false) }
     var lifestyleScore by remember { mutableStateOf(0) }
-
-    fun showTimePicker(currentTime: LocalTime?, onTimeSet: (LocalTime) -> Unit) {
-        val timePickerDialog = TimePickerDialog(context,
-            { _, hourOfDay, minute -> onTimeSet(LocalTime.of(hourOfDay, minute)) },
-            currentTime?.hour ?: LocalTime.now().hour,
-            currentTime?.minute ?: LocalTime.now().minute,
-            false // Use 24-hour view
-        )
-        timePickerDialog.show()
-    }
 
     Column(
         modifier = Modifier
@@ -46,14 +42,18 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
         )
 
         Button(
-            onClick = { showTimePicker(sleepTime) { sleepTime = it } },
+            onClick = {
+                showTimePicker(context, sleepTime) { sleepTime = it }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = sleepTime?.format(DateTimeFormatter.ofPattern("h:mm a")) ?: "Set Sleep Time")
         }
 
         Button(
-            onClick = { showTimePicker(wakeUpTime) { wakeUpTime = it } },
+            onClick = {
+                showTimePicker(context, wakeUpTime) { wakeUpTime = it }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = wakeUpTime?.format(DateTimeFormatter.ofPattern("h:mm a")) ?: "Set Wake-up Time")
@@ -65,21 +65,19 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
                     showResult = true
                     val calculatedScore = calculateLifestyleScore(sleepTime!!, wakeUpTime!!)
                     lifestyleScore = calculatedScore
-                    viewModel.addSleepScore(calculatedScore)
-                    Toast.makeText(context, "Lifestyle score updated", Toast.LENGTH_SHORT).show()
+                    addSleepScoreToFirebase(calculatedScore, context) // Directly store the score in Firebase
                 } else {
                     Toast.makeText(context, "Please set both sleep and wake-up times", Toast.LENGTH_SHORT).show()
                 }
             },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text("Check")
         }
 
         if (showResult) {
-            val message = getPersonalizedMessage(lifestyleScore)
             Text(
-                text = message,
+                text = getPersonalizedMessage(lifestyleScore),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(top = 16.dp)
             )
@@ -87,20 +85,8 @@ fun SleepRecommendation(viewModel: LifestyleViewModel = viewModel()) {
     }
 }
 
-fun getPersonalizedMessage(score: Int): String {
-    return when (score) {
-        100 -> "Adequate sleep achieved! Keep up the good work. Lifestyle score earned from Sleep: $score"
-        10 -> "Careful! Lack of sleep can impact cognitive function and decision making, you need to get more sleep in the coming days. Lifestyle score earned from Sleep: $score"
-        40 -> "3-4 hours of sleep is still insufficient but at the very least you are entering the REM cycle, look to get more sleep in the coming days. Lifestyle score earned from Sleep: $score"
-        75 -> "Almost adequate sleep achieved(under 7 hours). Consider taking a power nap during the day. Lifestyle score earned from Sleep: $score"
-        90 -> "The effects of sleeping more than 9 hours a day are heavily debated, though it would only be considered detrimental if you were massively oversleeping (13+ hours). Lifestyle score earned from Sleep: $score"
-        else -> "Your sleep score is $score. It's important to aim for 7-9 hours of quality sleep each night."
-    }
-}
-
 fun calculateLifestyleScore(sleepTime: LocalTime, wakeUpTime: LocalTime): Int {
     val duration = ChronoUnit.HOURS.between(sleepTime, wakeUpTime).let { if (it < 0) it + 24 else it }.toInt()
-
     return when (duration) {
         in 0..2 -> 10
         in 3..4 -> 40
@@ -109,3 +95,37 @@ fun calculateLifestyleScore(sleepTime: LocalTime, wakeUpTime: LocalTime): Int {
         else -> 90
     }
 }
+
+fun getPersonalizedMessage(score: Int):String {
+    // Your personalized message logic based on the score
+    return "Score: $score"
+}
+
+fun showTimePicker(context: android.content.Context, currentTime: LocalTime?, onTimeSet: (LocalTime) -> Unit) {
+    val timePickerDialog = TimePickerDialog(
+        context,
+        { _, hourOfDay, minute -> onTimeSet(LocalTime.of(hourOfDay, minute)) },
+        currentTime?.hour ?: LocalTime.now().hour,
+        currentTime?.minute ?: LocalTime.now().minute,
+        false // Use 24-hour view
+    )
+    timePickerDialog.show()
+}
+
+fun addSleepScoreToFirebase(score: Int, context: android.content.Context) {
+    CoroutineScope(Dispatchers.IO).launch {
+        val databaseRef = Firebase.database.reference.child("users").child("defaultUserId").child("sleepData")
+        val scoreEntry = mapOf(
+            "date" to DateTimeFormatter.ISO_DATE.format(java.time.LocalDate.now()),
+            "score" to score
+        )
+        databaseRef.push().setValue(scoreEntry)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Sleep data saved successfully.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, "Failed to save sleep data.", Toast.LENGTH_SHORT).show()
+            }
+    }
+}
+

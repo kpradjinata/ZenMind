@@ -23,25 +23,28 @@ import androidx.compose.material.icons.filled.Settings
 
 
 import androidx.compose.material.Text
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 
 import androidx.compose.runtime.Composable
 
 sealed class NavigationItem(var route: String, var icon: ImageVector, var title: String) {
-    object Meditation : NavigationItem("meditation", Icons.Default.Home, "Meditation")
-    object Hydration : NavigationItem("hydration", Icons.Default.Settings, "Hydration")
-    object Sleep : NavigationItem("sleep", Icons.Default.Home, "Sleep")
-    object Lifestyle : NavigationItem("lifestyle", Icons.Default.Settings, "Lifestyle") // New
+    object Meditation : NavigationItem("meditation", Icons.Default.Info, "Meditation")
+    object Hydration : NavigationItem("hydration", Icons.Default.Favorite, "Hydration")
+    object Sleep : NavigationItem("sleep", Icons.Default.Edit, "Sleep")
+    object Lifestyle : NavigationItem("lifestyle", Icons.Default.Home, "Lifestyle") // New
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, userId: String) {
     NavHost(navController, startDestination = NavigationItem.Meditation.route) {
         composable(NavigationItem.Meditation.route) {
             MeditationContent()
         }
         composable(NavigationItem.Hydration.route) {
 
-            HydrationRecommendationEnhanced()
+            HydrationScreen(userId)
         }
         composable(NavigationItem.Sleep.route) {
             SleepRecommendation()
