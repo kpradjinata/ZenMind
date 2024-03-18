@@ -15,11 +15,52 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Steps -->
+    <TextView
+        android:id="@+id/step1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Choose a quiet and comfortable place where you won't be disturbed. Sit or lie down in a comfortable position, ensuring that your body feels relaxed and supported."
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Close your eyes and take a few deep breaths to relax your body and calm your mind. Let go of any tension you may be holding in your muscles, starting from your head down to your toes."
+        android:layout_below="@id/step1TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3. Select a mental image or scenario that brings you a sense of peace, joy, or relaxation. It could be a serene natural landscape, a favorite place from your past, or a scene that represents your goals and aspirations."
+        android:layout_below="@id/step2TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step4TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4. Once you have your visual image in mind, engage your senses to make the experience as vivid as possible. Visualize the colors, shapes, and textures of the scene. Imagine the sounds, smells, and sensations associated with it."
+        android:layout_below="@id/step3TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step5TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5. Allow yourself to fully immerse in the visualization, as if you're experiencing it in real life. Notice how it makes you feel emotionally and physically. Stay with the visualization for a few minutes, savoring the sensations and emotions it evokes."
+        android:layout_below="@id/step4TextView"
+        android:layout_marginBottom="8dp"/>
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step5TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
@@ -28,8 +69,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finish"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step5TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
+
 
 </RelativeLayout>

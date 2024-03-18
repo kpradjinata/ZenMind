@@ -15,11 +15,86 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Steps -->
+    <TextView
+        android:id="@+id/step1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Find a comfortable position, either sitting or lying down."
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Close your eyes gently and focus on your breath."
+        android:layout_below="@id/step1TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3. Bring awareness to each part of your body, starting from your toes and moving upward."
+        android:layout_below="@id/step2TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step4TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4. As you focus on each body part, notice any sensations that arise. This could include feelings of tension, warmth, tingling, or relaxation."
+        android:layout_below="@id/step3TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step5TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5. If you encounter areas of tension or discomfort, take a moment to consciously relax those muscles. You can do this by gently tensing the muscles in that area and then releasing them, allowing them to soften and let go."
+        android:layout_below="@id/step4TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step6TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6. Throughout the body scan, try to stay present and attentive to your experience in the moment. If your mind starts to wander or you become distracted, gently guide your attention back to the sensations in your body."
+        android:layout_below="@id/step5TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step7TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="7. Continue scanning each part of your body, moving systematically from your feet to your head."
+        android:layout_below="@id/step6TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step8TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8. Once you've completed the body scan, take a few moments to reflect on your experience. Notice how your body feels overall, as well as any changes in tension or relaxation."
+        android:layout_below="@id/step7TextView"
+        android:layout_marginBottom="8dp"/>
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step8TextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Conclusion -->
+    <TextView
+        android:id="@+id/conclusionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember to stay present and observe any sensations without judgment. Body scan meditation can be a valuable tool for relaxation and self-awareness. Try to incorporate it into your daily or weekly routine to experience its full benefits over time."
+        android:layout_below="@id/step8TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
@@ -28,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finish"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/conclusionTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 

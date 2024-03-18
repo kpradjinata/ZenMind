@@ -15,11 +15,60 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
 
+    <!-- Steps -->
+    <TextView
+        android:id="@+id/step1TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1. Choose a quiet and comfortable space where you can sit or lie down without distractions. Sit in a comfortable position with your back straight but relaxed. You can sit cross-legged on the floor, on a cushion, or in a chair with your feet flat on the ground."
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step2TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2. Gently close your eyes to help minimize external distractions and turn your attention inward. Take a few deep breaths to relax your body and calm your mind. Allow any tension or stress to melt away with each exhale."
+        android:layout_below="@id/step1TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step3TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3. Start by directing loving-kindness towards yourself. Repeat phrases such as 'May I be happy, may I be healthy, may I be safe, may I be at ease.' Repeat these phrases silently to yourself or say them aloud, whichever feels most comfortable for you."
+        android:layout_below="@id/step2TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step4TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4. Once you feel a sense of warmth and compassion towards yourself, gradually extend loving-kindness to others. You can start by focusing on loved ones, such as family members, friends, or mentors. Repeat the same phrases for them: 'May [person's name] be happy, may [person's name] be healthy, may [person's name] be safe, may [person's name] be at ease.'"
+        android:layout_below="@id/step3TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step5TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5. In the final stage of the meditation, extend loving-kindness to all beings without exception. Even to difficult individuals-people with whom you may have challenges or conflicts."
+        android:layout_below="@id/step4TextView"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/step6TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="6. When you're ready, gently bring your awareness back to the present moment. Wiggle your fingers and toes, stretch your body, and open your eyes slowly."
+        android:layout_below="@id/step5TextView"
+        android:layout_marginBottom="8dp"/>
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step6TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
@@ -28,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Finish"
-        android:layout_below="@id/titleTextView"
+        android:layout_below="@id/step6TextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
