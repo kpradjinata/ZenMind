@@ -14,7 +14,7 @@ University life can be overwhelmingly stressful, often leading to the developmen
 - **Community Support:** Although not fully implemented, future updates aim to include peer-to-peer connections to foster a support network among users.
 
 ## Installation and Setup
-1. Clone the repository from [GitHub link](#).
+1. Clone the repository from our GitHub link.
 2. Ensure you have Android Studio installed.
 3. Open the project in Android Studio and wait for the Gradle build to finish.
 4. Connect an Android device or use the emulator to run the app.
